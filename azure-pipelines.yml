@@ -12,8 +12,10 @@ trigger:
 pr: none
 
 variables:
-  BuildPlatform: 'any cpu'
-  BuildConfiguration: 'release'
+- name: BuildPlatform
+  value:  'any cpu'
+- name: BuildConfiguration
+  value: 'release'
 
 stages:
 - stage: provision_to_feature_env
@@ -21,12 +23,22 @@ stages:
   condition: and(always(), contains(variables['Build.SourceBranch'], 'refs/heads/feature'))
   jobs:
   - job: feature_provisioning
+    variables:
+    - group: feature-simplehttpapiapp
     displayName: 'Feature env provisioning job'
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - script: echo provisioning to feature environment
-      displayName: 'Feature environment provisioning'
+    - task: PowerShell@2
+      inputs:
+        targetType: filePath
+        filePath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
+        arguments: '-DeploymentServicePrincipalAppId $(DeploymentServicePrincipalClientId) 
+        -DeploymentServicePrincipalSecret $(DeploymentServicePrincipalClientSecret) -TenantId $(TenantId) -ResourceGroupLocation $(Location)
+        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
+        errorActionPreference: stop
+        pwsh: true 
+      displayName: 'Create or update SimpleHttpApiFunction-feature-resgrp resource group'
 
 - stage: provision_to_develop_env
   displayName: 'Provision resources to develop environment'
