@@ -16,6 +16,7 @@ variables:
 stages:
 - stage: provision_to_feature_env
   displayName: 'Provision resources to feature environment'
+  condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/heads/feature'))
   jobs:
   - job: feature_provisioning
     displayName: 'Feature env provisioning job'
@@ -27,6 +28,7 @@ stages:
 
 - stage: provision_to_develop_env
   displayName: 'Provision resources to develop environment'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
   jobs:
   - job: develop_provisioning
     displayName: 'Develop env provisioning job'
@@ -38,6 +40,7 @@ stages:
 
 - stage: provision_to_production_env
   displayName: 'Provision resources to production environment'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
   - job: production_provisioning
     displayName: 'Prodduction env provisioning job'
