@@ -9,6 +9,8 @@ trigger:
     include:
     - '*'
 
+pr: none
+
 variables:
   BuildPlatform: 'any cpu'
   BuildConfiguration: 'release'
