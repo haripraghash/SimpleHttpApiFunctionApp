@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+name: $(BuildDefinitionName)_$(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+
+trigger:
+  branches:
+    include:
+    - '*'
+
+variables:
+  BuildPlatform: 'any cpu'
+  BuildConfiguration: 'release'
+
+stages:
+- stage: Provision resources to feature environment
+  jobs:
+  - job: Provision
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo provisioning to feature environment
+      displayName: 'Feature environment provisioning'
+
