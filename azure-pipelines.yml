@@ -17,7 +17,8 @@ stages:
 - stage: provision_to_feature_env
   displayName: 'Provision resources to feature environment'
   jobs:
-  - job: Provision
+  - job: feature_provisioning
+    displayName: 'Feature env provisioning job'
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -27,10 +28,22 @@ stages:
 - stage: provision_to_develop_env
   displayName: 'Provision resources to develop environment'
   jobs:
-  - job: Provision
+  - job: develop_provisioning
+    displayName: 'Develop env provisioning job'
     pool:
       vmImage: 'ubuntu-latest'
     steps:
     - script: echo provisioning to develop environment
       displayName: 'Develop environment provisioning'
+
+- stage: provision_to_production_env
+  displayName: 'Provision resources to production environment'
+  jobs:
+  - job: production_provisioning
+    displayName: 'Prodduction env provisioning job'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo provisioning to production environment
+      displayName: 'production environment provisioning'
 
