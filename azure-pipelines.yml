@@ -14,7 +14,7 @@ variables:
   BuildConfiguration: 'release'
 
 stages:
-- stage: Provision resources to feature environment
+- stage: provision_to_feature_env
   displayName: 'Provision resources to feature environment'
   jobs:
   - job: Provision
