@@ -24,3 +24,13 @@ stages:
     - script: echo provisioning to feature environment
       displayName: 'Feature environment provisioning'
 
+- stage: provision_to_develop_env
+  displayName: 'Provision resources to develop environment'
+  jobs:
+  - job: Provision
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo provisioning to develop environment
+      displayName: 'Develop environment provisioning'
+
