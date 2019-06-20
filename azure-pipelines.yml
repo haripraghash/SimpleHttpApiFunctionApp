@@ -1,0 +1,52 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+name: $(BuildDefinitionName)_$(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+
+trigger:
+  branches:
+    include:
+    - '*'
+
+variables:
+  BuildPlatform: 'any cpu'
+  BuildConfiguration: 'release'
+
+stages:
+- stage: provision_to_feature_env
+  displayName: 'Provision resources to feature environment'
+  condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/heads/feature'))
+  jobs:
+  - job: feature_provisioning
+    displayName: 'Feature env provisioning job'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo provisioning to feature environment
+      displayName: 'Feature environment provisioning'
+
+- stage: provision_to_develop_env
+  displayName: 'Provision resources to develop environment'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  jobs:
+  - job: develop_provisioning
+    displayName: 'Develop env provisioning job'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo provisioning to develop environment
+      displayName: 'Develop environment provisioning'
+
+- stage: provision_to_production_env
+  displayName: 'Provision resources to production environment'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  jobs:
+  - job: production_provisioning
+    displayName: 'Prodduction env provisioning job'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo provisioning to production environment
+      displayName: 'production environment provisioning'
+

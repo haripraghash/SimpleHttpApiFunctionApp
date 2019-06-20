@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/haripraghash/simplehttpapifunctionapp/_apis/build/status/haripraghash.SimpleHttpApiFunctionApp?branchName=master)](https://dev.azure.com/haripraghash/simplehttpapifunctionapp/_build/latest?definitionId=21&branchName=master)
+
 # Provision a function app on a consumption plan with managed identity enabled
 
 [![Deploy to Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F101-functions-managed-identity%2Fazuredeploy.json)
