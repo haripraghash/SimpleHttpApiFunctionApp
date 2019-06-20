@@ -180,7 +180,6 @@
         "description": "Pick the timezone to use for the function"
       }
     },
-    /* Artifacts parameters */
     "_artifactsLocation": {
       "type": "string"
     },
@@ -198,7 +197,6 @@
   },
     "variables": {
       "functionAppName": "[concat('simplehttpapifunctionapp', parameters('shortLocation'), parameters('environment'))]",
-      "hostingPlanName": "[concat(variables('functionAppName'), 'plan')]",
       "storageAccountName": "[concat('funcapi', parameters('shortLocation'), parameters('environment'), 'stor')]"
     },
     "resources": [
@@ -209,7 +207,6 @@
         "location": "[parameters('resourceGroupLocation')]",
         "kind": "functionapp",
         "dependsOn": [
-          "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanName'))]",
           "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
           "[resourceId('microsoft.insights/components/', variables('functionAppName'))]"
         ],
@@ -235,14 +232,7 @@
                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                 "value": "[reference(resourceId('microsoft.insights/components/', variables('functionAppName')), '2018-05-01-preview').InstrumentationKey]"
               },
-              {
-                "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-                "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')),'2017-06-01').keys[0].value)]"
-              },
-              {
-                "name": "WEBSITE_CONTENTSHARE",
-                "value": "[toLower(variables('functionAppName'))]"
-              },
+              
               {
                 "name": "WEBSITE_TIME_ZONE",
                 "value": "[parameters('timezone')]"
@@ -250,24 +240,7 @@
             ]
           },
           "name": "[variables('functionAppName')]",
-          "clientAffinityEnabled": false,
-          "serverFarmId": "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanName'))]"
-        }
-      },
-      {
-        "type": "Microsoft.Web/serverfarms",
-        "apiVersion": "2018-11-01",
-        "name": "[variables('hostingPlanName')]",
-        "location": "[parameters('resourceGroupLocation')]",
-        "properties": {
-          "name": "[variables('hostingPlanName')]"
-        },
-        "sku": {
-          "name": "Y1",
-          "tier": "Dynamic",
-          "size": "Y1",
-          "family": "Y",
-          "capacity": 0
+          "clientAffinityEnabled": false
         }
       },
       {
