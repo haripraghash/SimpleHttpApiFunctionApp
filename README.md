@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/haripraghash/simplehttpapifunctionapp/_apis/build/status/haripraghash.SimpleHttpApiFunctionApp?branchName=master)](https://dev.azure.com/haripraghash/simplehttpapifunctionapp/_build/latest?definitionId=21&branchName=master)
+[![Build Status](https://dev.azure.com/haripraghash/simplehttpapifunctionapp/_apis/build/status/haripraghash.SimpleHttpApiFunctionApp)](https://dev.azure.com/haripraghash/simplehttpapifunctionapp/_build/latest?definitionId=21)
 
 # Provision a function app on a consumption plan with managed identity enabled
 
