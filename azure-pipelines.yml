@@ -28,14 +28,14 @@ stages:
 
 - stage: provision_to_develop_env
   displayName: 'Provision resources to develop environment'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
   jobs:
   - job: develop_provisioning
     displayName: 'Develop env provisioning job'
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - script: echo provisioning to develop environment
+    - script: echo $(Build.SourceBranch)
       displayName: 'Develop environment provisioning'
 
 - stage: provision_to_production_env
