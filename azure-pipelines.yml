@@ -15,6 +15,7 @@ variables:
 
 stages:
 - stage: Provision resources to feature environment
+  displayName: 'Provision resources to feature environment'
   jobs:
   - job: Provision
     pool:
