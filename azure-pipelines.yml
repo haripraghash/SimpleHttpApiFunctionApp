@@ -33,7 +33,7 @@ stages:
       inputs:
         targetType: filePath
         filePath: ./SimpleHttpApiFunctionApp.Deployment/Run-WithPipelineVariables.ps1
-        arguments: '-ScriptPath ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1 
+        arguments: '-ScriptPath "./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1" 
         -secretVariables @{ DeploymentServicePrincipalSecret = "$(DeploymentServicePrincipalClientSecret)"}'
         #filePath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
         #arguments: '-DeploymentServicePrincipalAppId $(DeploymentServicePrincipalClientId) 
