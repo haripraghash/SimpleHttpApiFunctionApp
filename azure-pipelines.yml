@@ -23,7 +23,7 @@ stages:
   - job: validate_scripts
     variables:
     - group: feature-simplehttpapiapp
-    displayName: 'Feature env provisioning job'
+    displayName: 'PR Validation job'
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -33,7 +33,7 @@ stages:
         ScriptType: FilePath
         ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
         ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
-        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation) -ValidateOnly $true'
+        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation) -ValidateOnly'
         azurePowerShellVersion: LatestVersion
         errorActionPreference: stop
       displayName: 'Validate ARM templates'
@@ -55,7 +55,7 @@ stages:
         ScriptType: FilePath
         ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
         ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
-        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation) -ValidateOnly $false'
+        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
         azurePowerShellVersion: LatestVersion
         errorActionPreference: stop
       displayName: 'Create or update SimpleHttpApiFunction-feature-resgrp resource group'

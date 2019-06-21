@@ -19,7 +19,7 @@ Param (
 	[Parameter(Mandatory=$true)]
 	[string] $ShortLocation = '',
 
-	[bool] $ValidateOnly = $false
+	[switch] $ValidateOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -41,6 +41,8 @@ function CreateResourceGroup() {
 	$parameters['shortLocation'] = $ShortLocation
 	$parameters['resourceGroupLocation'] = $ResourceGroupLocation
 
+if($ValidateOnly)
+{
 
 	.\Deploy-AzureResourceGroup.ps1 `
 	    -ResourceGroupLocation $ResourceGroupLocation `
@@ -50,7 +52,19 @@ function CreateResourceGroup() {
 		-StorageContainerName $ArtifactsStorageContainerName `
 		-TemplateFile $TemplateFile `
 		-TemplateParameters $parameters `
-		-ValidateOnly $ValidateOnly
+		-ValidateOnly
+	}
+	else
+	{
+		.\Deploy-AzureResourceGroup.ps1 `
+	    -ResourceGroupLocation $ResourceGroupLocation `
+		-ResourceGroupName $ResourceGroupName `
+		-UploadArtifacts `
+		-StorageAccountName $ArtifactsStorageAccountName `
+		-StorageContainerName $ArtifactsStorageContainerName `
+		-TemplateFile $TemplateFile `
+		-TemplateParameters $parameters 
+	}
 }
 
 function CreateAzureAdApps()
