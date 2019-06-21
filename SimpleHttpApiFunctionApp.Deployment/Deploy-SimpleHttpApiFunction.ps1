@@ -1,11 +1,4 @@
 Param (
-	# Azure AD
-	[Parameter(Mandatory=$true)]
-    [string] $DeploymentServicePrincipalAppId,
-
-	[Parameter(Mandatory=$true)]
-    [secureString] $DeploymentServicePrincipalSecret,
-
 	[Parameter(Mandatory=$true)]
     [string] $TenantId,
 	
@@ -30,8 +23,7 @@ Param (
 $ErrorActionPreference = 'Stop'
 
 Set-Location $PSScriptRoot
-$credential = New-Object System.Management.Automation.PSCredential ($DeploymentServicePrincipalAppId, $DeploymentServicePrincipalSecret)
-Connect-AzAccount -Tenant $TenantId -ServicePrincipal -Credential $credential
+
 $AadTenantId = (Get-AzContext).Tenant.Id
 $ArtifactsStorageAccountName = $ResourceNamePrefix + $Environment + 'artifacts'
 $ArtifactsStorageContainerName = 'artifacts'

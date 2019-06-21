@@ -31,11 +31,11 @@ stages:
     steps:
     - task: AzurePowerShell@4
       inputs:
-        azureSubscription: 'ARM'
+        azureSubscription: 'multistage-feature'
         ScriptType: FilePath
-        ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Run-WithPipelineVariables.ps1
-        ScriptArguments: '-ScriptPath "$(System.DefaultWorkingDirectory)/SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1" 
-        -secretVariables @{ DeploymentServicePrincipalSecret = "$(DeploymentServicePrincipalClientSecret)"}'
+        ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
+        ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
+        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
         #filePath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
         #arguments: '-DeploymentServicePrincipalAppId $(DeploymentServicePrincipalClientId) 
         #-DeploymentServicePrincipalSecret $(DeploymentServicePrincipalClientSecret) -TenantId $(TenantId) -ResourceGroupLocation $(Location)
