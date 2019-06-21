@@ -40,13 +40,13 @@ function CreateResourceGroup() {
 
 
 	.\Deploy-AzureResourceGroup.ps1 `
-	    -resourcegrouplocation $ResourceGroupLocation `
-		-resourcegroupname $ResourceGroupName `
-		-uploadartifacts `
-		-storageaccountname $ArtifactsStorageAccountName `
-		-storagecontainername $ArtifactsStorageContainerName `
-		-templatefile $TemplateFile `
-		-templateparameters $parameters
+	    -ResourceGroupLocation $ResourceGroupLocation `
+		-ResourceGroupName $ResourceGroupName `
+		-UploadArtifacts `
+		-StorageAccountName $ArtifactsStorageAccountName `
+		-StorageContainerName $ArtifactsStorageContainerName `
+		-TemplateFile $TemplateFile `
+		-TemplateParameters $parameters
 }
 
 function CreateAzureAdApps()
