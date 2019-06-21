@@ -40,6 +40,7 @@ stages:
         #arguments: '-DeploymentServicePrincipalAppId $(DeploymentServicePrincipalClientId) 
         #-DeploymentServicePrincipalSecret $(DeploymentServicePrincipalClientSecret) -TenantId $(TenantId) -ResourceGroupLocation $(Location)
         #-ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
+        azurePowerShellVersion: LatestVersion
         errorActionPreference: stop
       displayName: 'Create or update SimpleHttpApiFunction-feature-resgrp resource group'
 
