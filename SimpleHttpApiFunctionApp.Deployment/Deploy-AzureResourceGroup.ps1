@@ -64,8 +64,7 @@ if ($UploadArtifacts) {
 
     # Create the storage account if it doesn't already exist
     if ($StorageAccount -eq $null) {
-        New-AzResourceGroup -Location "$ResourceGroupLocation" -Name $ResourceGroupName -Force
-        New-AzResourceGroup -Location "$ResourceGroupLocation" -Name $ResourceGroupName -Force
+        New-AzResourceGroup -Location $ResourceGroupLocation -Name $ResourceGroupName -Force
         $StorageAccount = New-AzStorageAccount -StorageAccountName $StorageAccountName -Type 'Standard_LRS' -ResourceGroupName $StorageResourceGroupName -Location "$ResourceGroupLocation"
     }
 
