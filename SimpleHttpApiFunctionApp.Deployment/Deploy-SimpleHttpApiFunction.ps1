@@ -1,11 +1,4 @@
 Param (
-	# Azure AD
-	[Parameter(Mandatory=$true)]
-    [string] $DeploymentServicePrincipalAppId,
-
-	[Parameter(Mandatory=$true)]
-    [secureString] $DeploymentServicePrincipalSecret,
-
 	[Parameter(Mandatory=$true)]
     [string] $TenantId,
 	
@@ -30,10 +23,9 @@ Param (
 $ErrorActionPreference = 'Stop'
 
 Set-Location $PSScriptRoot
-$credential = New-Object System.Management.Automation.PSCredential ($DeploymentServicePrincipalAppId, $DeploymentServicePrincipalSecret)
-Connect-AzAccount -Tenant $TenantId -ServicePrincipal -Credential $credential
+Write-Host "Begining to execute Deploy-SimpleHttpApiFunction.ps1"
 $AadTenantId = (Get-AzContext).Tenant.Id
-$ArtifactsStorageAccountName = $ResourceNamePrefix + $Environment + 'artifacts'
+$ArtifactsStorageAccountName = 'httpapi' + $Environment + 'artifacts'
 $ArtifactsStorageContainerName = 'artifacts'
 $ArtifactsStagingDirectory = '.'
 
@@ -45,16 +37,17 @@ function CreateResourceGroup() {
 	$parameters['environment'] = $Environment
 	#$parameters['isDevelopment'] = $IsDevelopment
 	$parameters['shortLocation'] = $ShortLocation
+	$parameters['resourceGroupLocation'] = $ResourceGroupLocation
 
 
-	.\Deploy-AzureResourcegroup.ps1 `
-	    -resourcegrouplocation $ResourceGroupLocation `
-		-resourcegroupname $ResourceGroupName `
-		-uploadartifacts `
-		-storageaccountname $ArtifactsStorageAccountName `
-		-storagecontainername $ArtifactsStorageContainerName `
-		-templatefile $TemplateFile `
-		-templateparameters $parameters
+	.\Deploy-AzureResourceGroup.ps1 `
+	    -ResourceGroupLocation $ResourceGroupLocation `
+		-ResourceGroupName $ResourceGroupName `
+		-UploadArtifacts `
+		-StorageAccountName $ArtifactsStorageAccountName `
+		-StorageContainerName $ArtifactsStorageContainerName `
+		-TemplateFile $TemplateFile `
+		-TemplateParameters $parameters
 }
 
 function CreateAzureAdApps()

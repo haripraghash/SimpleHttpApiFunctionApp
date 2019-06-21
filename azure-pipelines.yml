@@ -8,9 +8,7 @@ trigger:
   branches:
     include:
     - '*'
-
-pr: none
-
+    
 variables:
 - name: BuildPlatform
   value:  'any cpu'
@@ -29,15 +27,15 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: PowerShell@2
+    - task: AzurePowerShell@4
       inputs:
-        targetType: filePath
-        filePath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
-        arguments: '-DeploymentServicePrincipalAppId $(DeploymentServicePrincipalClientId) 
-        -DeploymentServicePrincipalSecret $(DeploymentServicePrincipalClientSecret) -TenantId $(TenantId) -ResourceGroupLocation $(Location)
+        azureSubscription: 'multistage-feature'
+        ScriptType: FilePath
+        ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
+        ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
         -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
+        azurePowerShellVersion: LatestVersion
         errorActionPreference: stop
-        pwsh: true 
       displayName: 'Create or update SimpleHttpApiFunction-feature-resgrp resource group'
 
 - stage: provision_to_develop_env
