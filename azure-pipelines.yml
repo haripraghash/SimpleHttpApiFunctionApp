@@ -34,6 +34,7 @@ stages:
         azureSubscription: 'multistage-feature'
         ScriptType: InlineScript
         Inline: get-azcontext
+        azurePowerShellVersion: LatestVersion
         #ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
         #-ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
         #filePath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
