@@ -32,16 +32,29 @@ stages:
     - task: AzurePowerShell@4
       inputs:
         azureSubscription: 'multistage-feature'
-        ScriptType: FilePath
-        ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
-        ScriptArguments: -TenantId $(TenantId) -ResourceGroupLocation $(Location)
-        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)
+        ScriptType: InlineScript
+        Inline: get-azcontext
+        #ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
+        #-ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
         #filePath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
         #arguments: '-DeploymentServicePrincipalAppId $(DeploymentServicePrincipalClientId) 
         #-DeploymentServicePrincipalSecret $(DeploymentServicePrincipalClientSecret) -TenantId $(TenantId) -ResourceGroupLocation $(Location)
         #-ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
         errorActionPreference: stop
       displayName: 'Create or update SimpleHttpApiFunction-feature-resgrp resource group'
+    # - task: AzurePowerShell@4
+    #   inputs:
+    #     azureSubscription: 'multistage-feature'
+    #     ScriptType: FilePath
+    #     ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
+    #     ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
+    #     -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
+    #     #filePath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
+    #     #arguments: '-DeploymentServicePrincipalAppId $(DeploymentServicePrincipalClientId) 
+    #     #-DeploymentServicePrincipalSecret $(DeploymentServicePrincipalClientSecret) -TenantId $(TenantId) -ResourceGroupLocation $(Location)
+    #     #-ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
+    #     errorActionPreference: stop
+    #   displayName: 'Create or update SimpleHttpApiFunction-feature-resgrp resource group'
 
 - stage: provision_to_develop_env
   displayName: 'Provision resources to develop environment'
