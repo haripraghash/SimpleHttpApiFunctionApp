@@ -17,7 +17,9 @@ Param (
 	[bool] $IsDevelopment = $true,
 	
 	[Parameter(Mandatory=$true)]
-	[string] $ShortLocation = ''
+	[string] $ShortLocation = '',
+
+	[bool] $ValidateOnly = $false
 )
 
 $ErrorActionPreference = 'Stop'
@@ -48,6 +50,7 @@ function CreateResourceGroup() {
 		-StorageContainerName $ArtifactsStorageContainerName `
 		-TemplateFile $TemplateFile `
 		-TemplateParameters $parameters
+		-ValidateOnly $ValidateOnly
 }
 
 function CreateAzureAdApps()
