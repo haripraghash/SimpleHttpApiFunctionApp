@@ -43,7 +43,6 @@ function CreateResourceGroup() {
 
 if($ValidateOnly)
 {
-
 	.\Deploy-AzureResourceGroup.ps1 `
 	    -ResourceGroupLocation $ResourceGroupLocation `
 		-ResourceGroupName $ResourceGroupName `
