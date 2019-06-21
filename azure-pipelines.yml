@@ -33,7 +33,7 @@ stages:
         ScriptType: FilePath
         ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
         ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
-        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation) -ValidateOnly $true'
+        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation) -ValidateOnly $false'
         azurePowerShellVersion: LatestVersion
         errorActionPreference: stop
       displayName: 'Validate ARM templates'
@@ -55,7 +55,7 @@ stages:
         ScriptType: FilePath
         ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
         ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
-        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
+        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation) -ValidateOnly $true'
         azurePowerShellVersion: LatestVersion
         errorActionPreference: stop
       displayName: 'Create or update SimpleHttpApiFunction-feature-resgrp resource group'
