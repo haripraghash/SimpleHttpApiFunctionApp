@@ -51,8 +51,8 @@ if($ValidateOnly)
 		-StorageAccountName $ArtifactsStorageAccountName `
 		-StorageContainerName $ArtifactsStorageContainerName `
 		-TemplateFile $TemplateFile `
-		-TemplateParameters $parameters `
-		-ValidateOnly
+		-ValidateOnly `
+		-TemplateParameters $parameters 
 	}
 	else
 	{
@@ -65,6 +65,7 @@ if($ValidateOnly)
 		-TemplateFile $TemplateFile `
 		-TemplateParameters $parameters 
 	}
+}
 
 function CreateAzureAdApps()
 {
