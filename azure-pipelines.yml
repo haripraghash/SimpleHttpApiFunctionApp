@@ -8,9 +8,7 @@ trigger:
   branches:
     include:
     - '*'
-
-pr: none
-
+    
 variables:
 - name: BuildPlatform
   value:  'any cpu'
