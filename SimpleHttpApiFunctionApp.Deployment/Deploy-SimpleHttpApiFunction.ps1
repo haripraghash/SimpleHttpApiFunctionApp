@@ -49,7 +49,7 @@ function CreateResourceGroup() {
 		-StorageAccountName $ArtifactsStorageAccountName `
 		-StorageContainerName $ArtifactsStorageContainerName `
 		-TemplateFile $TemplateFile `
-		-TemplateParameters $parameters
+		-TemplateParameters $parameters `
 		-ValidateOnly $ValidateOnly
 }
 
