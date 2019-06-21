@@ -39,7 +39,7 @@ function CreateResourceGroup() {
 	$parameters['shortLocation'] = $ShortLocation
 
 
-	./Deploy-AzureResourcegroup.ps1 `
+	.\Deploy-AzureResourceGroup.ps1 `
 	    -resourcegrouplocation $ResourceGroupLocation `
 		-resourcegroupname $ResourceGroupName `
 		-uploadartifacts `
