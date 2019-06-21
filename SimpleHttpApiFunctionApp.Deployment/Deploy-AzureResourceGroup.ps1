@@ -22,7 +22,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 3
 
 Write-Host "Begining to execute Deploy-AzureResourceGrouo.ps1"
-Write-Host $TemplateParameters
+Write-Host @TemplateParameters
 function Format-ValidationOutput {
     param ($ValidationOutput, [int] $Depth = 0)
     Set-StrictMode -Off
