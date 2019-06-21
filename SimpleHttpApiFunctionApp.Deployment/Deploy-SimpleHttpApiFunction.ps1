@@ -65,7 +65,6 @@ if($ValidateOnly)
 		-TemplateFile $TemplateFile `
 		-TemplateParameters $parameters 
 	}
-}
 
 function CreateAzureAdApps()
 {
