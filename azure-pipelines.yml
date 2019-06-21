@@ -8,7 +8,7 @@ trigger:
   branches:
     include:
     - '*'
-    
+
 variables:
 - name: BuildPlatform
   value:  'any cpu'
@@ -16,6 +16,28 @@ variables:
   value: 'release'
 
 stages:
+- stage: validate_scripts
+  displayName: 'Validate ARM template and scripts'
+  condition: and(always(), eq(variables['Build.Reason'], 'PullRequest'))
+  jobs:
+  - job: validate_scripts
+    variables:
+    - group: feature-simplehttpapiapp
+    displayName: 'PR Validation job'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: AzurePowerShell@4
+      inputs:
+        azureSubscription: 'multistage-feature'
+        ScriptType: FilePath
+        ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
+        ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
+        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation) -ValidateOnly'
+        azurePowerShellVersion: LatestVersion
+        errorActionPreference: stop
+      displayName: 'Validate ARM templates'
+
 - stage: provision_to_feature_env
   displayName: 'Provision resources to feature environment'
   condition: and(always(), contains(variables['Build.SourceBranch'], 'refs/heads/feature'))
