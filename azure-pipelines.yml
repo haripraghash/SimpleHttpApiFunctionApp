@@ -29,18 +29,18 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: PowerShell@2
+    - task: AzurePowerShell@4
       inputs:
-        targetType: filePath
-        filePath: ./SimpleHttpApiFunctionApp.Deployment/Run-WithPipelineVariables.ps1
-        arguments: '-ScriptPath "$(System.DefaultWorkingDirectory)/SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1" 
+        azureSubscription: 'ARM'
+        ScriptType: FilePath
+        ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Run-WithPipelineVariables.ps1
+        ScriptArguments: '-ScriptPath "$(System.DefaultWorkingDirectory)/SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1" 
         -secretVariables @{ DeploymentServicePrincipalSecret = "$(DeploymentServicePrincipalClientSecret)"}'
         #filePath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
         #arguments: '-DeploymentServicePrincipalAppId $(DeploymentServicePrincipalClientId) 
         #-DeploymentServicePrincipalSecret $(DeploymentServicePrincipalClientSecret) -TenantId $(TenantId) -ResourceGroupLocation $(Location)
         #-ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
         errorActionPreference: stop
-        pwsh: true 
       displayName: 'Create or update SimpleHttpApiFunction-feature-resgrp resource group'
 
 - stage: provision_to_develop_env
