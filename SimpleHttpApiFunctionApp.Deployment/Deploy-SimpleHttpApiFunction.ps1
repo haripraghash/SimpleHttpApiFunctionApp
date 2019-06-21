@@ -1,10 +1,6 @@
 Param (
-	# Azure AD
 	[Parameter(Mandatory=$true)]
-    [string] $DeploymentServicePrincipalAppId,
-
-	[Parameter(Mandatory=$true)]
-    [secureString] $DeploymentServicePrincipalSecret,
+    [string] $TenantId,
 	
 	# Resource group
 	[Parameter(Mandatory=$true)]
@@ -19,18 +15,21 @@ Param (
 	[string] $Environment = 'feature',
 
 	[bool] $IsDevelopment = $true,
+	
 	[Parameter(Mandatory=$true)]
-	[string] $ShortLocation = ''
+	[string] $ShortLocation = '',
+
+	[switch] $ValidateOnly
 )
 
 $ErrorActionPreference = 'Stop'
 
 Set-Location $PSScriptRoot
-
 $AadTenantId = (Get-AzContext).Tenant.Id
-$ArtifactsStorageAccountName = $ResourceNamePrefix + $Environment + 'artifacts'
+$ArtifactsStorageAccountName = 'httpapi' + $Environment + 'artifacts'
 $ArtifactsStorageContainerName = 'artifacts'
 $ArtifactsStagingDirectory = '.'
+
 
 function CreateResourceGroup() {
 	$parameters = New-Object -TypeName Hashtable
@@ -39,37 +38,31 @@ function CreateResourceGroup() {
 	$parameters['environment'] = $Environment
 	#$parameters['isDevelopment'] = $IsDevelopment
 	$parameters['shortLocation'] = $ShortLocation
+	$parameters['resourceGroupLocation'] = $ResourceGroupLocation
 
-
-	.\Deploy-AzureResourcegroup.ps1 `
-	    -resourcegrouplocation $ResourceGroupLocation `
-		-resourcegroupname $ResourceGroupName `
-		-uploadartifacts `
-		-storageaccountname $ArtifactsStorageAccountName `
-		-storagecontainername $ArtifactsStorageContainerName `
-		-templatefile $TemplateFile `
-		-templateparameters $parameters
-}
-
-function CreateAzureAdApps()
+if($ValidateOnly)
 {
-    Write-Host "Azure AD App - Creating application..."
-
-	$ClientPermissionNames = @("user_impersonation")
-
-    $azureAdWebApp = .\AD\Add-AdApplication.ps1 `
-        -TenantId $AadTenantId `
-        -WebAppName $webUiName `
-        -ApiAppName $webApiName `
-		-HpUsersGroupId $HpUsersGroupId `
-		-HpAdminsGroupId $HpAdminsGroupId `
-		-AadAdmin $AadAdmin `
-		-AadPassword $AadPassword `
-		-ClientPermissionNames $ClientPermissionNames `
-		-IsDevelopment $IsDevelopment
-        
-    Write-Host "Azure Ad App - Done."
-    return $azureAdWebApp    
+	.\Deploy-AzureResourceGroup.ps1 `
+	    -ResourceGroupLocation $ResourceGroupLocation `
+		-ResourceGroupName $ResourceGroupName `
+		-UploadArtifacts `
+		-StorageAccountName $ArtifactsStorageAccountName `
+		-StorageContainerName $ArtifactsStorageContainerName `
+		-TemplateFile $TemplateFile `
+		-ValidateOnly `
+		-TemplateParameters $parameters 
+	}
+	else
+	{
+		.\Deploy-AzureResourceGroup.ps1 `
+	    -ResourceGroupLocation $ResourceGroupLocation `
+		-ResourceGroupName $ResourceGroupName `
+		-UploadArtifacts `
+		-StorageAccountName $ArtifactsStorageAccountName `
+		-StorageContainerName $ArtifactsStorageContainerName `
+		-TemplateFile $TemplateFile `
+		-TemplateParameters $parameters 
+	}
 }
 
 function Main() {

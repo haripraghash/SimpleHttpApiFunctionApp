@@ -10,37 +10,71 @@ trigger:
     - '*'
 
 variables:
-  BuildPlatform: 'any cpu'
-  BuildConfiguration: 'release'
+- name: BuildPlatform
+  value:  'any cpu'
+- name: BuildConfiguration
+  value: 'release'
 
 stages:
+- stage: validate_scripts
+  displayName: 'Validate ARM template and scripts'
+  condition: and(always(), eq(variables['Build.Reason'], 'PullRequest'))
+  jobs:
+  - job: validate_scripts
+    variables:
+    - group: feature-simplehttpapiapp
+    displayName: 'PR Validation job'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: AzurePowerShell@4
+      inputs:
+        azureSubscription: 'multistage-feature'
+        ScriptType: FilePath
+        ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
+        ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
+        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation) -ValidateOnly'
+        azurePowerShellVersion: LatestVersion
+        errorActionPreference: stop
+      displayName: 'Validate ARM templates'
+
 - stage: provision_to_feature_env
   displayName: 'Provision resources to feature environment'
-  condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/heads/feature'))
+  condition: and(always(), contains(variables['Build.SourceBranch'], 'refs/heads/feature'))
   jobs:
   - job: feature_provisioning
+    variables:
+    - group: feature-simplehttpapiapp
     displayName: 'Feature env provisioning job'
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - script: echo provisioning to feature environment
-      displayName: 'Feature environment provisioning'
+    - task: AzurePowerShell@4
+      inputs:
+        azureSubscription: 'multistage-feature'
+        ScriptType: FilePath
+        ScriptPath: ./SimpleHttpApiFunctionApp.Deployment/Deploy-SimpleHttpApiFunction.ps1
+        ScriptArguments: '-TenantId $(TenantId) -ResourceGroupLocation $(Location)
+        -ResourceGroupName $(ResourceGroupName) -Environment $(Environment) -ShortLocation $(ShortLocation)'
+        azurePowerShellVersion: LatestVersion
+        errorActionPreference: stop
+      displayName: 'Create or update SimpleHttpApiFunction-feature-resgrp resource group'
 
 - stage: provision_to_develop_env
   displayName: 'Provision resources to develop environment'
-  #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
   jobs:
   - job: develop_provisioning
     displayName: 'Develop env provisioning job'
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - script: echo $(Build.SourceBranch)
+    - script: echo provisioning to develop environment
       displayName: 'Develop environment provisioning'
 
 - stage: provision_to_production_env
   displayName: 'Provision resources to production environment'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
   - job: production_provisioning
     displayName: 'Prodduction env provisioning job'
