@@ -37,6 +37,7 @@ function CreateResourceGroup() {
 	$parameters['environment'] = $Environment
 	#$parameters['isDevelopment'] = $IsDevelopment
 	$parameters['shortLocation'] = $ShortLocation
+	$parameters['resourceGroupLocation'] = $ResourceGroupLocation
 
 
 	.\Deploy-AzureResourceGroup.ps1 `
