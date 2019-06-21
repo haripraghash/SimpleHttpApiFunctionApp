@@ -21,8 +21,6 @@ try {
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 3
 
-Write-Host "Begining to execute Deploy-AzureResourceGrouo.ps1"
-Write-Host @TemplateParameters
 function Format-ValidationOutput {
     param ($ValidationOutput, [int] $Depth = 0)
     Set-StrictMode -Off
@@ -100,6 +98,7 @@ if ($ValidateOnly) {
     $ErrorMessages = Format-ValidationOutput (Test-AzResourceGroupDeployment -ResourceGroupName $ResourceGroupName `
                                                                                   -TemplateFile $TemplateFile `
                                                                                   -TemplateParameterFile $TemplateParametersFile `
+                                                                                  @TemplateParameters `
                                                                                   @OptionalParameters)
     if ($ErrorMessages) {
         Write-Output '', 'Validation returned the following errors:', @($ErrorMessages), '', 'Template is invalid.'

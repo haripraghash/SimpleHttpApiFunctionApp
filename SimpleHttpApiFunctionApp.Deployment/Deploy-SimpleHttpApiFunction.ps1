@@ -25,7 +25,6 @@ Param (
 $ErrorActionPreference = 'Stop'
 
 Set-Location $PSScriptRoot
-Write-Host "Begining to execute Deploy-SimpleHttpApiFunction.ps1"
 $AadTenantId = (Get-AzContext).Tenant.Id
 $ArtifactsStorageAccountName = 'httpapi' + $Environment + 'artifacts'
 $ArtifactsStorageContainerName = 'artifacts'
@@ -64,27 +63,6 @@ if($ValidateOnly)
 		-TemplateFile $TemplateFile `
 		-TemplateParameters $parameters 
 	}
-}
-
-function CreateAzureAdApps()
-{
-    Write-Host "Azure AD App - Creating application..."
-
-	$ClientPermissionNames = @("user_impersonation")
-
-    $azureAdWebApp = .\AD\Add-AdApplication.ps1 `
-        -TenantId $AadTenantId `
-        -WebAppName $webUiName `
-        -ApiAppName $webApiName `
-		-HpUsersGroupId $HpUsersGroupId `
-		-HpAdminsGroupId $HpAdminsGroupId `
-		-AadAdmin $AadAdmin `
-		-AadPassword $AadPassword `
-		-ClientPermissionNames $ClientPermissionNames `
-		-IsDevelopment $IsDevelopment
-        
-    Write-Host "Azure Ad App - Done."
-    return $azureAdWebApp    
 }
 
 function Main() {
