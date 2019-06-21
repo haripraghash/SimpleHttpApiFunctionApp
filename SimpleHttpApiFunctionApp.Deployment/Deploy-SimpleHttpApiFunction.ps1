@@ -23,7 +23,7 @@ Param (
 $ErrorActionPreference = 'Stop'
 
 Set-Location $PSScriptRoot
-
+Write-Host "Begining to execute Deploy-SimpleHttpApiFunction.ps1"
 $AadTenantId = (Get-AzContext).Tenant.Id
 $ArtifactsStorageAccountName = $ResourceNamePrefix + $Environment + 'artifacts'
 $ArtifactsStorageContainerName = 'artifacts'
